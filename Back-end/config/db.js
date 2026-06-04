@@ -5,11 +5,11 @@ export let isMockDB = false;
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/resume-ai', {
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/resume-ai', {
       serverSelectionTimeoutMS: 2000 // Fast fail in 2 seconds if MongoDB is not running
     });
     console.log(`MongoDB Connected: ${conn.connection.host}`);
-    
+
     // Seed default admin user in real MongoDB
     const adminExists = await User.findOne({ email: 'kalemahesh082003@gmail.com' });
     if (!adminExists) {
