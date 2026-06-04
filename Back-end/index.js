@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
-import path from 'path';
-import { fileURLToPath } from 'url';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
 import resumeRoutes from './routes/resume.routes.js';
@@ -20,8 +20,8 @@ await connectDB();
 const app = express();
 
 // Resolve paths for ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 // 1. Security Headers (Helmet)
 // Configure Content Security Policy (CSP) to allow API and scripts needed for standard deployments
@@ -34,8 +34,8 @@ app.use(helmet({
 app.use(compression());
 
 // 3. CORS Configuration
-const allowedOrigins = process.env.CLIENT_URL 
-  ? process.env.CLIENT_URL.split(',') 
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',')
   : ['http://localhost:5173', 'http://127.0.0.1:5173'];
 
 app.use(cors({
@@ -95,20 +95,12 @@ app.get('/api/health', (req, res) => {
 });
 
 // 6. Production Unified Deployment Static Serving
-if (process.env.NODE_ENV === 'production') {
-  const clientBuildPath = path.join(__dirname, '../Front-end/dist');
-  app.use(express.static(clientBuildPath));
-
-  // Catch-all route to serve React Single Page Application (SPA) Router index.html
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'ResumeAI Backend API is Running'
   });
-} else {
-  // Root Router in dev mode
-  app.get('/', (req, res) => {
-    res.send('Welcome to the ResumeAI API (Development Mode)');
-  });
-}
+});
 
 // 404 Route handler for undefined API routes
 app.use('/api/*', (req, res, next) => {
