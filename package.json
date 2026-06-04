@@ -1,0 +1,13 @@
+{
+  "name": "resume-analyser-root",
+  "version": "1.0.0",
+  "description": "Root runner for ResumeAI ATS Resume Analyzer",
+  "scripts": {
+    "install-all": "npm install --prefix Back-end && npm install --prefix Front-end",
+    "build-frontend": "npm run build --prefix Front-end",
+    "start-backend": "npm start --prefix Back-end",
+    "dev-backend": "npm run dev --prefix Back-end",
+    "dev-frontend": "npm run dev --prefix Front-end",
+    "build": "npm run install-all && npm run build-frontend"
+  }
+}
